@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Tutorials | Index</title>
+    <style>
+        /* Bauhaus-inspired Minimalist Aesthetic */
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #1a1a1a;
+            --accent-color: #0055aa; /* Classic Blue */
+            --border-color: #e0e0e0;
+        }
+
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        header {
+            border-bottom: 4px solid var(--text-color);
+            margin-bottom: 40px;
+            padding-bottom: 10px;
+        }
+
+        h1 {
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            margin: 0;
+        }
+
+        .description {
+            font-style: italic;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        nav li {
+            margin-bottom: 15px;
+            border: 1px solid var(--border-color);
+            transition: all 0.2s ease;
+        }
+
+        nav li:hover {
+            border-color: var(--text-color);
+            background-color: #f9f9f9;
+        }
+
+        nav a {
+            display: block;
+            padding: 15px 20px;
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav a::after {
+            content: '→';
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+
+        footer {
+            margin-top: 60px;
+            font-size: 0.8rem;
+            color: #999;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+            padding-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Tutorial Series</h1>
+    </header>
+
+    <p class="description">
+        Please select a module below to begin. These tutorials are designed for interactive learning and faculty review.
+    </p>
+
+    <nav>
+        <ul>
+            <li><a href="Part_One.html">Part One: Introduction and Fundamentals</a></li>
+            <li><a href="Part_Two.html">Part Two: Advanced Applications</a></li>
+            <li><a href="Part_Three.html">Part Three: Conclusion and Summary</a></li>
+        </ul>
+    </nav>
+
+    <footer>
+        <p>&copy; 2026 | Hosted via GitHub Pages</p>
+    </footer>
+
+</body>
+</html>
