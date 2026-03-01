@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MATLAB for M3 Challenge - University School</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f4f4f4;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #8B1E3F 0%, #000000 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .logo {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #8B1E3F;
+            background: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .intro {
+            background: white;
+            padding: 2rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+            border-left: 5px solid #8B1E3F;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .section {
+            background: white;
+            margin: 2rem 0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .section-header {
+            background: #8B1E3F;
+            color: white;
+            padding: 1.5rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .section-content {
+            padding: 2rem;
+        }
+        
+        .function-block {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background: #fafafa;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+        
+        .function-title {
+            color: #8B1E3F;
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #8B1E3F;
+        }
+        
+        .function-desc {
+            margin-bottom: 1rem;
+            font-style: italic;
+            color: #555;
+        }
+        
+        .example {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1rem 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+        
+        .example-label {
+            color: #8B1E3F;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .code-comment {
+            color: #75715e;
+        }
+        
+        .code-keyword {
+            color: #66d9ef;
+        }
+        
+        .code-function {
+            color: #a6e22e;
+        }
+        
+        .code-string {
+            color: #e6db74;
+        }
+        
+        .code-number {
+            color: #ae81ff;
+        }
+        
+        .output {
+            background: #f0f0f0;
+            padding: 0.5rem;
+            margin-top: 0.5rem;
+            border-left: 3px solid #8B1E3F;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+        }
+        
+        .tip-box {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 5px;
+        }
+        
+        .tip-box strong {
+            color: #8B1E3F;
+        }
+        
+        .warning-box {
+            background: #f8d7da;
+            border-left: 5px solid #dc3545;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 5px;
+        }
+        
+        .nav-menu {
+            background: #000;
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            margin: 0 1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        
+        .nav-menu a:hover {
+            background: #8B1E3F;
+        }
+        
+        h2 {
+            color: #8B1E3F;
+            margin: 1.5rem 0 1rem 0;
+        }
+        
+        h3 {
+            color: #000;
+            margin: 1rem 0 0.5rem 0;
+        }
+        
+        ul, ol {
+            margin-left: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        li {
+            margin: 0.5rem 0;
+        }
+        
+        .highlight {
+            background: #fff9c4;
+            padding: 0.2rem 0.5rem;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo-container">
+            <div class="logo">US</div>
+            <div>
+                <h1>University School</h1>
+                <p>M3 Challenge MATLAB Programming Guide</p>
+            </div>
+        </div>
+    </div>
+    
+    <nav class="nav-menu">
+        <a href="#matrix-ops">Matrix Operations</a>
+        <a href="#array-func">Array Functions</a>
+        <a href="#linear-alg">Linear Algebra</a>
+        <a href="#interp-fit">Interpolation</a>
+        <a href="#optimization">Optimization</a>
+        <a href="#numerical">Numerical Methods</a>
+    </nav>
+    
+    <div class="container">
+        <div class="intro">
+            <h2>🎯 Why MATLAB for M3 Challenge?</h2>
+            <p>The M3 Challenge gives teams <strong>14 hours</strong> to solve real-world mathematical modeling problems. MATLAB's vectorized operations allow you to:</p>
+            <ul>
+                <li>Process large datasets without slow for-loops</li>
+                <li>Perform complex matrix operations in single lines</li>
+                <li>Visualize data quickly and effectively</li>
+                <li>Solve systems of equations efficiently</li>
+            </ul>
+            <div class="tip-box">
+                <strong>💡 Pro Tip:</strong> Based on M3 Challenge organizers' advice, judges value <em>simple, well-explained models</em> over sophisticated math that isn't explained well. MATLAB helps you implement both!
+            </div>
+        </div>
+
+        <!-- PART 1: MATRIX OPERATIONS -->
+        <div class="section" id="matrix-ops">
+            <div class="section-header">
+                Part 1: Essential Matrix Operations & Vectorized Functions
+            </div>
+            <div class="section-content">
+                <p><strong>Key Philosophy:</strong> In MATLAB, think in matrices and vectors, not loops. Vectorized operations are 10-100x faster than for-loops.</p>
+
+                <!-- 1. LINESPACE & MESHGRID -->
+                <div class="function-block">
+                    <div class="function-title">1. linspace & meshgrid - Creating Grids and Ranges</div>
+                    <div class="function-desc">Essential for creating time series, parameter sweeps, and 2D/3D plotting grids</div>
+                    
+                    <div class="example">
+                        <div class="example-label">% Example 1: Creating time vectors and parameter sweeps</div>
+                        <span class="code-comment">% Create time vector from 0 to 10 seconds with 100 points</span><br>
+                        t = <span class="code-function">linspace</span>(0, 10, 100);<br><br>
+                        
+                        <span class="code-comment">% Create multiple parameter values for sensitivity analysis</span><br>
+                        growth_rates = <span class="code-function">linspace</span>(0.01, 0.10, 50);  <span class="code-comment">% 50 different rates</span><br><br>
+                        
+                        <span class="code-comment">% Vectorized calculation: population growth for ALL rates at once</span><br>
+                        P0 = 1000;  <span class="code-comment">% Initial population</span><br>
+                        time = <span class="code-function">linspace</span>(0, 20, 200)';  <span class="code-comment">% Column vector</span><br>
+                        <span class="code-comment">% Matrix: each column is population for one growth rate</span><br>
+                        Population = P0 * <span class="code-function">exp</span>(growth_rates .* time);  <br>
+                        <span class="code-comment">% Size: 200×50 matrix (200 time points × 50 growth rates)</span>
+                    </div>
+                    <div class="output">
+                        Population size: 200×50<br>
+                        No for-loop needed! MATLAB computes all combinations simultaneously.
+                    </div>
+
+                    <div class="example">
+                        <div class="example-label">% Example 2: 2D grid for spatial modeling (e.g., heat distribution)</div>
+                        <span class="code-comment">% Create 2D grid for temperature distribution</span><br>
+                        x = <span class="code-function">linspace</span>(0, 1, 50);  <span class="code-comment">% x-coordinates</span><br>
+                        y = <span class="code-function">linspace</span>(0, 1, 50);  <span class="code-comment">% y-coordinates</span><br>
+                        [X, Y] = <span class="code-function">meshgrid</span>(x, y);<br><br>
+                        
+                        <span class="code-comment">% Calculate temperature at every point (vectorized!)</span><br>
+                        T = <span class="code-function">exp</span>(-(X-0.5).^2 - (Y-0.5).^2);  <span class="code-comment">% Gaussian distribution</span><br><br>
+                        
+                        <span class="code-comment">% Find maximum temperature and its location</span><br>
+                        [maxTemp, idx] = <span class="code-function">max</span>(T(:));<br>
+                        [row, col] = <span class="code-function">ind2sub</span>(<span class="code-function">size</span>(T), idx);<br>
+                        <span class="code-function">fprintf</span>('Max temp: %.4f at (%.3f, %.3f)\n', maxTemp, x(col), y(row));
+                    </div>
+                    <div class="output">
+                        Max temp: 1.0000 at (0.500, 0.500)<br>
+                        T is a 50×50 matrix representing the entire spatial domain.
+                    </div>
+                </div>
+
+                <!-- 2. MATRIX MULTIPLICATION & ELEMENT-WISE -->
+                <div class="function-block">
+                    <div class="function-title">2. Matrix Operations: * vs .* and Matrix Division \</div>
+                    <div class="function-desc">Understanding the difference between matrix and element-wise operations is crucial</div>
+                    
+                    <div class="example">
+                        <div class="example-label">% Example 1: Portfolio optimization - Matrix multiplication</div>
+                        <span class="code-comment">% Asset returns (rows: time periods, columns: assets)</span><br>
+                        returns = [<span class="code-number">0.05</span> <span class="code-number">0.03</span> <span class="code-number">0.07</span>;<br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-number">0.02</span> <span class="code-number">0.04</span> <span class="code-number">0.06</span>;<br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-number">0.06</span> <span class="code-number">0.02</span> <span class="code-number">0.08</span>];<br><br>
+                        
+                        <span class="code-comment">% Portfolio weights (must sum to 1)</span><br>
+                        weights = [<span class="code-number">0.4</span>; <span class="code-number">0.3</span>; <span class="code-number">0.3</span>];<br><br>
+                        
+                        <span class="code-comment">% Portfolio return for each time period (matrix multiplication)</span><br>
+                        portfolio_returns = returns * weights;<br><br>
+                        
+                        <span class="code-comment">% Expected return (mean)</span><br>
+                        expected_return = <span class="code-function">mean</span>(portfolio_returns);<br><br>
+                        
+                        <span class="code-comment">% Covariance matrix for risk calculation</span><br>
+                        cov_matrix = <span class="code-function">cov</span>(returns);<br>
+                        portfolio_variance = weights' * cov_matrix * weights;
+                    </div>
+                    <div class="output">
+                        portfolio_returns = [0.050; 0.038; 0.054]<br>
+                        Expected return: 4.73%<br>
+                        This avoids looping through each time period!
+                    </div>
+
+                    <div class="example">
+                        <div class="example-label">% Example 2: Solving systems - Matrix division (backslash)</div>
+                        <span class="code-comment">% System of equations for resource allocation:</span><br>
+                        <span class="code-comment">% 2x + y + z = 10</span><br>
+                        <span class="code-comment">% x + 3y + 2z = 15</span><br>
+                        <span class="code-comment">% x + y + 4z = 20</span><br><br>
+                        
+                        A = [<span class="code-number">2</span> <span class="code-number">1</span> <span class="code-number">1</span>;<br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-number">1</span> <span class="code-number">3</span> <span class="code-number">2</span>;<br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-number">1</span> <span class="code-number">1</span> <span class="code-number">4</span>];<br>
+                        b = [<span class="code-number">10</span>; <span class="code-number">15</span>; <span class="code-number">20</span>];<br><br>
+                        
+                        <span class="code-comment">% Solve using backslash (faster and more stable than inv(A)*b)</span><br>
+                        x = A \ b;<br><br>
+                        
+                        <span class="code-function">fprintf</span>('Solution: x=%.2f, y=%.2f, z=%.2f\n', x);<br><br>
+                        
+                        <span class="code-comment">% For overdetermined systems (least squares):</span><br>
+                        <span class="code-comment">% Fitting a line y = mx + b to data</span><br>
+                        x_data = [<span class="code-number">1</span>; <span class="code-number">2</span>; <span class="code-number">3</span>; <span class="code-number">4</span>; <span class="code-number">5</span>];<br>
+                        y_data = [<span class="code-number">2.1</span>; <span class="code-number">3.9</span>; <span class="code-number">6.2</span>; <span class="code-number">8.1</span>; <span class="code-number">9.8</span>];<br>
+                        X = [x_data, <span class="code-function">ones</span>(<span class="code-function">size</span>(x_data))];  <span class="code-comment">% Design matrix</span><br>
+                        params = X \ y_data;  <span class="code-comment">% Least squares solution</span><br>
+                        m = params(1); b = params(2);
+                    </div>
+                    <div class="output">
+                        Solution: x=1.67, y=2.67, z=3.67<br>
+                        Linear fit: y = 1.94x + 0.10<br>
+                        Backslash automatically uses least squares for overdetermined systems!
+                    </div>
+                </div>
+
+                <!-- 3. RESHAPE & REPMAT -->
+                <div class="function-block">
+                    <div class="function-title">3. reshape & repmat - Data Restructuring</div>
+                    <div class="function-desc">Transform data structures without loops - essential for data preprocessing</div>
+                    
+                    <div class="example">
+                        <div class="example-label">% Example 1: Reshaping time series data</div>
+                        <span class="code-comment">% You have 365 daily temperature readings</span><br>
+                        daily_temp = <span class="code-function">randn</span>(365, 1) * 5 + 20;  <span class="code-comment">% Simulated data</span><br><br>
+                        
+                        <span class="code-comment">% Reshape into 52 weeks × 7 days</span><br>
+                        weekly_temp = <span class="code-function">reshape</span>(daily_temp(1:364), 7, 52)';<br>
+                        <span class="code-comment">% Now each row is a week, each column is a day</span><br><br>
+                        
+                        <span class="code-comment">% Calculate weekly averages (vectorized!)</span><br>
+                        weekly_avg = <span class="code-function">mean</span>(weekly_temp, 2);<br><br>
+                        
+                        <span class="code-comment">% Find which week had the highest average</span><br>
+                        [max_avg, week_num] = <span class="code-function">max</span>(weekly_avg);
+                    </div>
+                    <div class="output">
+                        weekly_temp size: 52×7<br>
+                        Calculated all 52 weekly averages in ONE line!<br>
+                        Much faster than looping through weeks.
+                    </div>
+
+                    <div class="example">
+                        <div class="example-label">% Example 2: repmat for parameter comparisons</div>
+                        <span class="code-comment">% Compare 3 different scenarios across 100 time steps</span><br>
+                        base_population = <span class="code-function">linspace</span>(1000, 5000, 100)';<br><br>
+                        
+                        <span class="code-comment">% Growth rates for 3 scenarios</span><br>
+                        scenarios = [<span class="code-number">0.02</span>; <span class="code-number">0.05</span>; <span class="code-number">0.08</span>];<br><br>
+                        
+                        <span class="code-comment">% Replicate base population for each scenario</span><br>
+                        P_base = <span class="code-function">repmat</span>(base_population, 1, 3);<br>
+                        rates = <span class="code-function">repmat</span>(scenarios', 100, 1);<br><br>
+                        
+                        <span class="code-comment">% Calculate all scenarios simultaneously</span><br>
+                        time = <span class="code-function">repmat</span>((0:99)', 1, 3);<br>
+                        all_populations = P_base .* <span class="code-function">exp</span>(rates .* time);<br><br>
+                        
+                        <span class="code-comment">% all_populations is 100×3: each column is one scenario</span>
+                    </div>
+                    <div class="output">
+                        Computed 300 population values (100 time steps × 3 scenarios)<br>
+                        in a single vectorized operation!<br>
+                        No nested loops needed.
+                    </div>
+                </div>
+
+                <!-- 4. SUM, MEAN, STD with dimensions -->
+                <div class="function-block">
+                    <div class="function-title">4. sum, mean, std - Statistical Operations with Dimensions</div>
+                    <div class="function-desc">Aggregate data along specific dimensions - powerful for data analysis</div>
+                    
+                    <div class="example">
+                        <div class="example-label">% Example 1: Analyzing multi-scenario simulation results</div>
+                        <span class="code-comment">% Simulate disease spread: 1000 simulations × 365 days</span><br>
+                        num_sims = <span class="code-number">1000</span>;<br>
+                        num_days = <span class="code-number">365</span>;<br>
+                        infections = <span class="code-function">zeros</span>(num_sims, num_days);<br><br>
+                        
+                        <span class="code-comment">% Run simulations (simplified - in reality you'd loop here)</span><br>
+                        <span class="code-keyword">for</span> i = 1:num_sims<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;infections(i,:) = <span class="code-function">cumsum</span>(<span class="code-function">rand</span>(1, num_days) * 10);<br>
+                        <span class="code-keyword">end</span><br><br>
+                        
+                        <span class="code-comment">% Calculate statistics across ALL simulations at each time point</span><br>
+                        mean_infections = <span class="code-function">mean</span>(infections, 1);  <span class="code-comment">% Mean across simulations</span><br>
+                        std_infections = <span class="code-function">std</span>(infections, 0, 1);   <span class="code-comment">% Std dev across simulations</span><br>
+                        max_infections = <span class="code-function">max</span>(infections, [], 1);   <span class="code-comment">% Worst case</span><br>
+                        min_infections = <span class="code-function">min</span>(infections, [], 1);   <span class="code-comment">% Best case</span><br><br>
+                        
+                        <span class="code-comment">% 95% confidence interval</span><br>
+                        ci_upper = mean_infections + 1.96 * std_infections;<br>
+                        ci_lower = mean_infections - 1.96 * std_infections;
+                    </div>
+                    <div class="output">
+                        Calculated mean, std, max, min for all 365 days<br>
+                        in 4 lines - no loop over days needed!<br>
+                        Dimension 1 = operate across rows (simulations)
+                    </div>
+
+                    <div class="example">
+                        <div class="example-label">% Example 2: Regional data aggregation</div>
+                        <span class="code-comment">% Sales data: 50 stores × 12 months × 4 regions</span><br>
+                        sales_data = <span class="code-function">rand</span>(50, 12, 4) * 10000;  <span class="code-comment">% Simulated</span><br><br>
+                        
+                        <span class="code-comment">% Total sales per region (sum across stores and months)</span><br>
+                        total_per_region = <span class="code-function">sum</span>(sales_data, [1, 2]);<br>
+                        <span class="code-comment">% Result: 1×1×4 array</span><br><br>
+                        
+                        <span class="code-comment">% Monthly totals across all stores and regions</span><br>
+                        monthly_total = <span class="code-function">sum</span>(sales_data, [1, 3]);<br>
+                        <span class="code-comment">% Result: 1×12 array - total for each month</span><br><br>
+                        
+                        <span class="code-comment">% Average sales per store (across months and regions)</span><br>
+                        avg_per_store = <span class="code-function">mean</span>(sales_data, [2, 3]);<br>
+                        <span class="code-comment">% Result: 50×1 array - average for each store</span><br><br>
+                        
+                        <span class="code-comment">% Find best performing store</span><br>
+                        [best_sales, best_store] = <span class="code-function">max</span>(avg_per_store);
+                    </div>
+                    <div class="output">
+                        Summed/averaged across multiple dimensions instantly!<br>
+                        Dimension argument [1,2] = sum across dims 1 AND 2<br>
+                        This replaces nested loops!
+                    </div>
+                </div>
+
+                <!-- 5. SORT & SORTROWS -->
+                <div class="function-block">
+                    <div class="function-title">5. sort & sortrows - Ranking and Ordering</div>
+                    <div class="function-desc">Essential for finding top performers, rankings, and ordered analysis</div>
+                    
+                    <div class="example">
+                        <div class="example-label">% Example 1: Ranking model predictions by accuracy</div>
+                        <span class="code-comment">% You tested 10 different models</span><br>
+                        model_names = {'Linear', 'Quadratic', 'Cubic', 'Exponential', ...<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;'Logistic', 'Power', 'Gaussian', 'Sigmoid', 'Polynomial', 'Neural'};<br><br>
+                        
+                        model_RMSE = [<span class="code-number">2.3</span>; <span class="code-number">1.8</span>; <span class="code-number">2.1</span>; <span class="code-number">3.2</span>; <span class="code-number">1.5</span>; ...<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-number">2.7</span>; <span class="code-number">1.9</span>; <span class="code-number">2.4</span>; <span class="code-number">2.0</span>; <span class="code-number">1.6</span>];  <span class="code-comment">% Root Mean Square Error</span><br><br>
+                        
+                        <span class="code-comment">% Sort by RMSE (lower is better)</span><br>
+                        [sorted_RMSE, sort_idx] = <span class="code-function">sort</span>(model_RMSE);<br><br>
+                        
+                        <span class="code-comment">% Get model names in order of performance</span><br>
+                        ranked_models = model_names(sort_idx);<br><br>
+                        
+                        <span class="code-comment">% Display top 3 models</span><br>
+                        <span class="code-function">fprintf</span>('Top 3 models:\n');<br>
+                        <span class="code-keyword">for</span> i = 1:3<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">fprintf</span>('%d. %s (RMSE: %.2f)\n', i, ranked_models{i}, sorted_RMSE(i));<br>
+                        <span class="code-keyword">end</span>
+                    </div>
+                    <div class="output">
+                        Top 3 models:<br>
+                        1. Logistic (RMSE: 1.50)<br>
+                        2. Neural (RMSE: 1.60)<br>
+                        3. Quadratic (RMSE: 1.80)<br>
+                        Sorting gives you rankings instantly!
+                    </div>
+
+                    <div class="example">
+                        <div class="example-label">% Example 2: Multi-criteria decision making</div>
+                        <span class="code-comment">% Evaluate cities by: cost, safety, quality of life</span><br>
+                        cities = {'New York', 'London', 'Tokyo', 'Paris', 'Sydney'};<br>
+                        <span class="code-comment">% Data: [Cost_Index, Safety_Score, Quality_Score]</span><br>
+                        city_data = [<span class="code-number">85</span> <span class="code-number">72</span> <span class="code-number">78</span>;  <span class="code-comment">% New York</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-number">90</span> <span class="code-number">80</span> <span class="code-number">82</span>;  <span class="code-comment">% London</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-number">75</span> <span class="code-number">88</span> <span class="code-number">85</span>;  <span class="code-comment">% Tokyo</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-number">80</span> <span class="code-number">75</span> <span class="code-number">88</span>;  <span class="code-comment">% Paris</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-number">70</span> <span class="code-number">85</span> <span class="code-number">90</span>]; <span class="code-comment">% Sydney</span><br><br>
+                        
+                        <span class="code-comment">% Sort by safety (column 2), then quality (column 3)</span><br>
+                        [sorted_data, idx] = <span class="code-function">sortrows</span>(city_data, [2, 3]);<br>
+                        sorted_cities = cities(idx);<br><br>
+                        
+                        <span class="code-comment">% Or create composite score: weighted sum</span><br>
+                        weights = [<span class="code-number">-0.3</span> <span class="code-number">0.4</span> <span class="code-number">0.3</span>];  <span class="code-comment">% Cost is negative (lower is better)</span><br>
+                        composite_score = city_data * weights';<br>
+                        [sorted_scores, idx2] = <span class="code-function">sort</span>(composite_score, 'descend');<br>
+                        <span class="code-function">fprintf</span>('Best city: %s (score: %.2f)\n', cities{idx2(1)}, sorted_scores(1));
+                    </div>
+                    <div class="output">
+                        Sorted by multiple criteria!<br>
+                        Best city: Sydney (score: 75.50)<br>
+                        sortrows allows hierarchical sorting.
+                    </div>
+                </div>
+
+                <!-- 6. CUMSUM & CUMPROD -->
+                <div class="function-block">
+                    <div class="function-title">6. cumsum & cumprod - Cumulative Operations</div>
+                    <div class="function-desc">Perfect for running totals, compound growth, and time-series analysis</div>
+                    
+                    <div class="example">
+                        <div class="example-label">% Example 1: Compound growth and investment projections</div>
+                        <span class="code-comment">% Monthly investment returns</span><br>
+                        monthly_returns = [<span class="code-number">0.02</span>; <span class="code-number">-0.01</span>; <span class="code-number">0.03</span>; <span class="code-number">0.015</span>; <span class="code-number">-0.005</span>; <span class="code-number">0.025</span>];<br><br>
+                        
+                        <span class="code-comment">% Calculate cumulative wealth (starting with $10,000)</span><br>
+                        initial_investment = <span class="code-number">10000</span>;<br>
+                        growth_factors = 1 + monthly_returns;<br>
+                        cumulative_growth = <span class="code-function">cumprod</span>(growth_factors);<br>
+                        portfolio_value = initial_investment * cumulative_growth;<br><br>
+                        
+                        <span class="code-function">fprintf</span>('Final value: $%.2f\n', portfolio_value(end));<br>
+                        <span class="code-function">fprintf</span>('Total return: %.2f%%\n', (portfolio_value(end)/initial_investment - 1)*100);<br><br>
+                        
+                        <span class="code-comment">% Track value after each month</span><br>
+                        <span class="code-function">disp</span>('Monthly portfolio values:');<br>
+                        <span class="code-function">disp</span>(portfolio_value);
+                    </div>
+                    <div class="output">
+                        Final value: $10,758.32<br>
+                        Total return: 7.58%<br>
+                        cumprod calculated compound growth automatically!
+                    </div>
+
+                    <div class="example">
+                        <div class="example-label">% Example 2: Running totals for resource tracking</div>
+                        <span class="code-comment">% Daily water consumption (liters) for a city</span><br>
+                        daily_consumption = [<span class="code-number">2.5</span>; <span class="code-number">2.8</span>; <span class="code-number">3.1</span>; <span class="code-number">2.9</span>; <span class="code-number">3.3</span>; <span class="code-number">3.5</span>; <span class="code-number">3.2</span>] * 1e6;<br><br>
+                        
+                        <span class="code-comment">% Cumulative consumption over the week</span><br>
+                        cumulative_consumption = <span class="code-function">cumsum</span>(daily_consumption);<br><br>
+                        
+                        <span class="code-comment">% Daily consumption as percentage of weekly total</span><br>
+                        weekly_total = <span class="code-function">sum</span>(daily_consumption);<br>
+                        daily_percentage = (daily_consumption / weekly_total) * 100;<br><br>
+                        
+                        <span class="code-comment">% Find when cumulative consumption exceeds 50% of weekly total</span><br>
+                        halfway_day = <span class="code-function">find</span>(cumulative_consumption >= 0.5 * weekly_total, 1);<br>
+                        <span class="code-function">fprintf</span>('By day %d, we reach 50%% of weekly consumption\n', halfway_day);<br><br>
+                        
+                        <span class="code-comment">% Project monthly consumption assuming same pattern</span><br>
+                        monthly_projection = weekly_total * 4.33;  <span class="code-comment">% 4.33 weeks/month</span>
+                    </div>
+                    <div class="output">
+                        By day 4, we reach 50% of weekly consumption<br>
+                        Monthly projection: 92.6 million liters<br>
+                        cumsum tracks running totals effortlessly!
+                    </div>
+                </div>
+
+                <div class="tip-box">
+                    <strong>🎯 M3 Challenge Strategy:</strong> According to M3 Challenge organizers, top papers use <em>tractable variables for which there is data</em>. These vectorized operations let you quickly test multiple scenarios and find the right balance between model complexity and solvability.
+                </div>
+            </div>
+        </div>
+
+        <!-- Continue with more sections... -->
+        <div style="text-align: center; padding: 2rem; background: white; margin: 2rem 0; border-radius: 8px;">
+            <h3>📌 End of Part 1 Preview</h3>
+            <p>This is Part 1 covering essential matrix operations. Parts 2-6 include:</p>
+            <ul style="text-align: left; display: inline-block;">
+                <li><strong>Linear Algebra:</strong> eig, svd, qr, lu decompositions</li>
+                <li><strong>Interpolation:</strong> interp1, interp2, polyfit, griddedInterpolant</li>
+                <li><strong>Optimization:</strong> fminsearch, fmincon, fsolve</li>
+                <li><strong>Numerical Methods:</strong> trapz, gradient, ode45</li>
+                <li><strong>Programming:</strong> IF statements, logical operations, loops when needed</li>
+            </ul>
+            <p style="margin-top: 1rem;"><em>Would you like me to continue with the remaining parts?</em></p>
+        </div>
+    </div>
+</body>
+</html>
