@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MATLAB for M3 Challenge - Part 3: Winner Insights - University School</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; background: #f4f4f4; }
+        .header { background: linear-gradient(135deg, #8B1E3F 0%, #000000 100%); color: white; padding: 2rem; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+        .logo-container { display: flex; align-items: center; justify-content: center; gap: 1rem; margin-bottom: 1rem; }
+        .logo { font-size: 3rem; font-weight: bold; color: #8B1E3F; background: white; padding: 0.5rem 1rem; border-radius: 8px; text-shadow: 2px 2px 4px rgba(0,0,0,0.2); }
+        .header h1 { font-size: 2.5rem; margin-bottom: 0.5rem; }
+        .header p { font-size: 1.2rem; opacity: 0.9; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+        .intro { background: white; padding: 2rem; margin: 2rem 0; border-radius: 8px; border-left: 5px solid #8B1E3F; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .section { background: white; margin: 2rem 0; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .section-header { background: #8B1E3F; color: white; padding: 1.5rem; font-size: 1.5rem; font-weight: bold; }
+        .section-content { padding: 2rem; }
+        .insight-block { margin: 2rem 0; padding: 1.5rem; background: #fafafa; border-radius: 8px; border: 1px solid #ddd; border-left: 4px solid #8B1E3F; }
+        .insight-title { color: #8B1E3F; font-size: 1.3rem; font-weight: bold; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+        .insight-title::before { content: "🏆"; font-size: 1.2rem; }
+        .insight-desc { margin-bottom: 1rem; font-style: italic; color: #555; }
+        .example { background: #2d2d2d; color: #f8f8f2; padding: 1rem; border-radius: 5px; margin: 1rem 0; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9rem; }
+        .example-label { color: #8B1E3F; font-weight: bold; margin-bottom: 0.5rem; }
+        .code-comment { color: #75715e; }
+        .code-keyword { color: #66d9ef; }
+        .code-function { color: #a6e22e; }
+        .code-string { color: #e6db74; }
+        .code-number { color: #ae81ff; }
+        .code-logical { color: #fd971f; }
+        .output { background: #f0f0f0; padding: 0.5rem; margin-top: 0.5rem; border-left: 3px solid #8B1E3F; font-family: 'Courier New', monospace; font-size: 0.85rem; }
+        .tip-box { background: #fff3cd; border-left: 5px solid #ffc107; padding: 1rem; margin: 1rem 0; border-radius: 5px; }
+        .tip-box strong { color: #8B1E3F; }
+        .warning-box { background: #f8d7da; border-left: 5px solid #dc3545; padding: 1rem; margin: 1rem 0; border-radius: 5px; }
+        .winner-badge { display: inline-block; background: linear-gradient(135deg, #FFD700, #FFA500); color: #000; padding: 0.3rem 0.8rem; border-radius: 20px; font-weight: bold; font-size: 0.85rem; margin: 0.3rem 0; }
+        .nav-menu { background: #000; padding: 1rem; position: sticky; top: 0; z-index: 100; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+        .nav-menu a { color: white; text-decoration: none; padding: 0.5rem 1rem; border-radius: 5px; transition: background 0.3s; font-size: 0.9rem; }
+        .nav-menu a:hover { background: #8B1E3F; }
+        h2 { color: #8B1E3F; margin: 1.5rem 0 1rem 0; }
+        h3 { color: #000; margin: 1rem 0 0.5rem 0; }
+        ul, ol { margin-left: 2rem; margin-bottom: 1rem; }
+        li { margin: 0.5rem 0; }
+        .highlight { background: #fff9c4; padding: 0.2rem 0.5rem; border-radius: 3px; font-weight: 500; }
+        .checklist { background: #e8f5e9; padding: 1rem; border-radius: 5px; margin: 1rem 0; }
+        .checklist li { margin: 0.3rem 0; }
+        .checklist li::before { content: "✅ "; color: #4caf50; font-weight: bold; }
+        .template-box { background: #e3f2fd; border: 1px solid #90caf9; padding: 1rem; border-radius: 5px; margin: 1rem 0; }
+        .rubric-table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+        .rubric-table th, .rubric-table td { padding: 0.75rem; border: 1px solid #ddd; text-align: left; vertical-align: top; }
+        .rubric-table th { background: #8B1E3F; color: white; }
+        .rubric-table tr:nth-child(even) { background: #f9f9f9; }
+        .rubric-table .high { background: #c8e6c9; }
+        .rubric-table .medium { background: #fff9c4; }
+        .rubric-table .low { background: #ffcdd2; }
+        .flow-diagram { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; margin: 1.5rem 0; }
+        .flow-step { background: white; padding: 1rem; border-radius: 8px; border: 2px solid #8B1E3F; min-width: 200px; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .flow-step h4 { color: #8B1E3F; margin-bottom: 0.5rem; }
+        .flow-arrow { font-size: 1.5rem; color: #8B1E3F; align-self: center; }
+        .quote-box { background: #f5f5f5; border-left: 4px solid #8B1E3F; padding: 1rem; margin: 1rem 0; font-style: italic; }
+        .quote-box strong { color: #8B1E3F; font-style: normal; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo-container">
+            <div class="logo">US</div>
+            <div>
+                <h1>University School</h1>
+                <p>M3 Challenge MATLAB Guide - Part 3: Winner Insights</p>
+            </div>
+        </div>
+    </div>
+    
+    <nav class="nav-menu">
+        <a href="#insight1">Insight 1: Simple > Complex</a>
+        <a href="#insight2">Insight 2: Document Everything</a>
+        <a href="#insight3">Insight 3: Modular Code</a>
+        <a href="#templates">Winner Templates</a>
+        <a href="#rubric">Judging Rubric</a>
+        <a href="#checklist">Competition Checklist</a>
+    </nav>
+    
+    <div class="container">
+        <div class="intro">
+            <h2>🎯 What Separates Winning Solutions?</h2>
+            <p>Based on analysis of SIAM's official resources [[13]][[31]] and winning solution patterns from 2021-2025 [[2]][[3]][[4]], champion teams share three critical habits:</p>
+            <ul>
+                <li><strong>Clarity over complexity:</strong> Judges value simple, well-explained models over sophisticated math that isn't explained well [[31]]</li>
+                <li><strong>Transparent reasoning:</strong> Top papers excel in Motivation, Justification, Explanation, and Citation [[31]]</li>
+                <li><strong>Iterative development:</strong> Winners build, test, and refine models in cycles—not linearly [[12]]</li>
+            </ul>
+            <div class="tip-box">
+                <strong>💡 Critical Insight:</strong> "Judges are particularly interested in each team's approach and methods. Judges will read, score, and provide feedback and comments on <em>partial solutions</em>." [[37]] This means a well-documented simple model often scores higher than a complex broken one!
+            </div>
+        </div>
+
+        <!-- WINNER INSIGHT 1 -->
+        <div class="section" id="insight1">
+            <div class="section-header">
+                Insight #1: Simple Models, Clearly Explained, Win
+            </div>
+            <div class="section-content">
+                <p><strong>Winner Pattern:</strong> Top teams start with the simplest viable model, then add complexity <em>only when justified by data or problem requirements</em>. They document <strong>why</strong> each choice was made.</p>
+                
+                <div class="quote-box">
+                    <strong>From SIAM Modeling Handbook:</strong> "Building a useful math model does not necessarily require advanced mathematics... It does require a willingness to do some research, brainstorm, and jump right in and try something that may be out of your comfort zone." [[12]]
+                </div>
+
+                <div class="insight-block">
+                    <div class="insight-title">Pattern: Progressive Model Building</div>
+                    <div class="function-desc">Start simple → Validate → Add complexity only if needed</div>
+                    
+                    <div class="example">
+                        <div class="example-label">% Winner Template: Progressive Model Framework</div>
+                        <span class="code-comment">% M3 Problem: Predict resource needs under uncertainty</span><br>
+                        <span class="code-keyword">function</span> results = progressiveModel(data, options)<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-comment">% ===== STEP 1: Baseline simple model =====</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">fprintf</span>(<span class="code-string">'[Model 1/3] Building baseline linear model...\n'</span>);<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;baseline = fitLinearModel(data);<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;baseline.RMSE = calculateRMSE(baseline, data);<br><br>
+                        
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-comment">% ===== STEP 2: Add complexity IF justified =====</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">if</span> options.allowNonlinear && baseline.RMSE > options.threshold<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">fprintf</span>(<span class="code-string">'[Model 2/3] RMSE=%.2f > threshold, trying nonlinear...\n'</span>, baseline.RMSE);<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;advanced = fitNonlinearModel(data, options.degree);<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;advanced.RMSE = calculateRMSE(advanced, data);<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-comment">% Only keep advanced model if improvement is significant</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">if</span> advanced.RMSE < baseline.RMSE * 0.9  <span class="code-comment">% 10% improvement threshold</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;model = advanced;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">fprintf</span>(<span class="code-string">'✓ Nonlinear model selected (RMSE: %.2f → %.2f)\n'</span>, ...<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;baseline.RMSE, advanced.RMSE);<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">else</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;model = baseline;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">fprintf</span>(<span class="code-string">'✗ Nonlinear not justified, keeping linear model\n'</span>);<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">end</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">else</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;model = baseline;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">end</span><br><br>
+                        
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-comment">% ===== STEP 3: Sensitivity analysis (required for top scores) =====</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">fprintf</span>(<span class="code-string">'[Model 3/3] Running sensitivity analysis...\n'</span>);<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;results.sensitivity = runSensitivity(model, data, options.params);<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;results.model = model;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;results.justification = generateJustification(baseline, model);<br>
+                        <span class="code-keyword">end</span>
+                    </div>
+                    <div class="output">
+                        [Model 1/3] Building baseline linear model...<br>
+                        [Model 2/3] RMSE=4.21 > threshold, trying nonlinear...<br>
+                        ✓ Nonlinear model selected (RMSE: 4.21 → 3.15)<br>
+                        [Model 3/3] Running sensitivity analysis...<br><br>
+                        <span class="winner-badge">Why this wins:</span> Clear decision trail judges can follow + automatic fallback + documented justification
+                    </div>
+                </div>
+
+                <div class="insight-block">
+                    <div class="insight-title">Pattern: Visual Validation Dashboard</div>
+                    <div class="function-desc">Winners show model performance visually—judges remember what they see</div>
+                    
+                    <div class="example">
+                        <div class="example-label">% Winner Template: One-Page Model Validation</div>
+                        <span class="code-comment">% Create a single figure that tells the whole story</span><br>
+                        <span class="code-function">figure</span>(<span class="code-string">'Position'</span>, [100, 100, 1200, 800], <span class="code-string">'Name'</span>, <span class="code-string">'Model Validation Summary'</span>);<br><br>
+                        
+                        <span class="code-comment">% Panel 1: Data vs Model Fit</span><br>
+                        <span class="code-function">subplot</span>(2, 2, 1);<br>
+                        <span class="code-function">plot</span>(data.time, data.observed, <span class="code-string">'bo'</span>, <span class="code-string">'MarkerFaceColor'</span>, <span class="code-string">'b'</span>);<br>
+                        <span class="code-function">hold</span> <span class="code-keyword">on</span>;<br>
+                        <span class="code-function">plot</span>(model.time, model.predicted, <span class="code-string">'r-'</span>, <span class="code-string">'LineWidth'</span>, 2);<br>
+                        <span class="code-function">legend</span>(<span class="code-string">'Observed Data'</span>, <span class="code-string">'Model Prediction'</span>, <span class="code-string">'Location'</span>, <span class="code-string">'best'</span>);<br>
+                        <span class="code-function">title</span>(<span class="code-string">'Model Fit to Historical Data'</span>);<br>
+                        <span class="code-function">xlabel</span>(<span class="code-string">'Time (days)'</span>); <span class="code-function">ylabel</span>(<span class="code-string">'Quantity'</span>);<br>
+                        <span class="code-function">grid</span> <span class="code-keyword">on</span>;<br><br>
+                        
+                        <span class="code-comment">% Panel 2: Residual Analysis (critical for credibility)</span><br>
+                        <span class="code-function">subplot</span>(2, 2, 2);<br>
+                        residuals = data.observed - model.predicted(1:<span class="code-function">length</span>(data.observed));<br>
+                        <span class="code-function">histogram</span>(residuals, 20, <span class="code-string">'FaceColor'</span>, [0.8 0.2 0.2]);<br>
+                        <span class="code-function">title</span>(<span class="code-string">'Residual Distribution'</span>);<br>
+                        <span class="code-function">xlabel</span>(<span class="code-string">'Prediction Error'</span>);<br>
+                        <span class="code-function">text</span>(0.05, 0.95, {<span class="code-function">sprintf</span>(<span class="code-string">'Mean: %.3f'</span>, <span class="code-function">mean</span>(residuals)), ...<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">sprintf</span>(<span class="code-string">'Std: %.3f'</span>, <span class="code-function">std</span>(residuals))}, ...<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-string">'Units'</span>, <span class="code-string">'normalized'</span>, <span class="code-string">'VerticalAlignment'</span>, <span class="code-string">'top'</span>);<br><br>
+                        
+                        <span class="code-comment">% Panel 3: Sensitivity Tornado Plot (shows robustness)</span><br>
+                        <span class="code-function">subplot</span>(2, 2, [3,4]);<br>
+                        params = {<span class="code-string">'Growth Rate'</span>, <span class="code-string">'Carrying Capacity'</span>, <span class="code-string">'Initial Value'</span>};<br>
+                        impacts = [0.15, 0.08, 0.03];  <span class="code-comment">% % change in output per 10% param change</span><br>
+                        <span class="code-function">barh</span>(impacts, <span class="code-string">'FaceColor'</span>, [0.2 0.6 0.9]);<br>
+                        <span class="code-function">set</span>(<span class="code-function">gca</span>, <span class="code-string">'YTickLabel'</span>, params);<br>
+                        <span class="code-function">xlabel</span>(<span class="code-string">'Sensitivity (% output change)'</span>);<br>
+                        <span class="code-function">title</span>(<span class="code-string">'Parameter Sensitivity Analysis'</span>);<br>
+                        <span class="code-function">grid</span> <span class="code-keyword">on</span> <span class="code-string">'x'</span>;<br><br>
+                        
+                        <span class="code-comment">% Add summary text box (judges LOVE this)</span><br>
+                        <span class="code-function">annotation</span>(<span class="code-string">'textbox'</span>, [0.72, 0.78, 0.25, 0.18], ...<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-string">'String'</span>, {<span class="code-function">sprintf</span>(<span class="code-string">'✓ RMSE: %.2f'</span>, model.RMSE), ...<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">sprintf</span>(<span class="code-string">'✓ R²: %.3f'</span>, model.Rsquared), ...<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-string">'✓ Residuals ~ Normal', ...</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-string">'✓ Key driver: Growth Rate'}, ...</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-string">'FitBoxToText'</span>, <span class="code-string">'on'</span>, <span class="code-string">'BackgroundColor'</span>, <span class="code-string">'#FFF9C4'</span>);
+                    </div>
+                    <div class="output">
+                        <span class="winner-badge">Why this wins:</span> One figure communicates fit quality, error distribution, AND robustness<br>
+                        Judges can instantly assess model credibility without reading pages of text<br>
+                        Text box summary = instant "executive summary" for busy judges
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- WINNER INSIGHT 2 -->
+        <div class="section" id="insight2">
+            <div class="section-header">
+                Insight #2: Document Assumptions & Decisions Like a Scientist
+            </div>
+            <div class="section-content">
+                <p><strong>Winner Pattern:</strong> Top papers include a dedicated "Assumptions & Justifications" section. Every modeling choice answers: <em>Why this? Why not alternatives?</em></p>
+                
+                <div class="quote-box">
+                    <strong>From M3 Tips & Guidance:</strong> "Judges value simple, well-explained models rather than sophisticated math that isn't explained well... Include enough details that judges could recreate your work if they wanted to." [[31]]
+                </div>
+
+                <div class="insight-block">
+                    <div class="insight-title">Pattern: Auto-Generated Assumption Log</div>
+                    <div class="function-desc">Track assumptions in code → auto-export to report appendix</div>
+                    
+                    <div class="example">
+                        <div class="example-label">% Winner Template: Assumption Tracking System</div>
+                        <span class="code-comment">% Initialize assumption tracker at script start</span><br>
+                        assumptions = struct();<br>
+                        assumptionCounter = 0;<br><br>
+                        
+                        <span class="code-keyword">function</span> id = addAssumption(description, justification, source, impact)<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;assumptionCounter = assumptionCounter + 1;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;id = <span class="code-function">sprintf</span>(<span class="code-string">'A%02d'</span>, assumptionCounter);<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;assumptions.(id) = struct(...<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-string">'description'</span>, description, ...<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-string">'justification'</span>, justification, ...<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-string">'source'</span>, source, ...<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-string">'impact'</span>, impact, ...<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-string">'timestamp'</span>, <span class="code-function">datestr</span>(<span class="code-function">now</span>));<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">fprintf</span>(<span class="code-string">'[ASSUMPTION %s] %s\n'</span>, id, description);<br>
+                        <span class="code-keyword">end</span><br><br>
+                        
+                        <span class="code-comment">% Use throughout modeling code</span><br>
+                        addAssumption(...<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-string">'Population growth is exponential for t < 20 years'</span>, ...<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-string">'Historical census data shows <5% deviation from exponential'</span>, ...<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-string">'US Census Bureau, 2020-2023'</span>, ...<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-string">'Overestimates after 20 years; sensitivity analysis shows ±12% impact'</span>);<br><br>
+                        
+                        addAssumption(...<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-string">'Resource consumption proportional to population'</span>, ...<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-string">'Per-capita usage stable in comparable regions (CV < 0.15)'</span>, ...<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-string">'EPA Municipal Waste Reports, 2022'</span>, ...<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-string">'Ignores behavioral changes; major uncertainty driver'</span>);<br><br>
+                        
+                        <span class="code-comment">% Auto-export to report-ready format at end</span><br>
+                        <span class="code-keyword">function</span> exportAssumptions(filename)<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;fid = <span class="code-function">fopen</span>(filename, <span class="code-string">'w'</span>);<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">fprintf</span>(fid, <span class="code-string">'## Model Assumptions & Justifications\n\n'</span>);<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;fields = <span class="code-function">fieldnames</span>(assumptions);<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">for</span> i = 1:<span class="code-function">length</span>(fields)<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id = fields{i};<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a = assumptions.(id);<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">fprintf</span>(fid, <span class="code-string">'### %s: %s\n'</span>, id, a.description);<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">fprintf</span>(fid, <span class="code-string">'**Justification:** %s\n\n'</span>, a.justification);<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">fprintf</span>(fid, <span class="code-string">'**Source:** %s\n\n'</span>, a.source);<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">fprintf</span>(fid, <span class="code-string">'**Impact/Uncertainty:** %s\n\n---\n\n'</span>, a.impact);<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">end</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">fclose</span>(fid);<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">fprintf</span>(<span class="code-string">'✓ Assumptions exported to %s\n'</span>, filename);<br>
+                        <span class="code-keyword">end</span>
+                    </div>
+                    <div class="output">
+                        [ASSUMPTION A01] Population growth is exponential for t < 20 years<br>
+                        [ASSUMPTION A02] Resource consumption proportional to population<br>
+                        ✓ Assumptions exported to assumptions_appendix.md<br><br>
+                        <span class="winner-badge">Why this wins:</span> Creates audit trail judges trust + saves hours of manual report writing + demonstrates scientific rigor
+                    </div>
+                </div>
+
+                <div class="insight-block">
+                    <div class="insight-title">Pattern: Decision Justification Matrix</div>
+                    <div class="function-desc">Explicitly compare modeling alternatives—show judges you considered options</div>
+                    
+                    <div class="example">
+                        <div class="example-label">% Winner Template: Model Selection Justification</div>
+                        <span class="code-comment">% Define candidate models with evaluation criteria</span><br>
+                        candidates = {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;struct(<span class="code-string">'name'</span>, <span class="code-string">'Linear'</span>, <span class="code-string">'complexity'</span>, 1, <span class="code-string">'data_req'</span>, <span class="code-string">'low'</span>), ...<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;struct(<span class="code-string">'name'</span>, <span class="code-string">'Exponential'</span>, <span class="code-string">'complexity'</span>, 2, <span class="code-string">'data_req'</span>, <span class="code-string">'medium'</span>), ...<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;struct(<span class="code-string">'name'</span>, <span class="code-string">'Logistic'</span>, <span class="code-string">'complexity'</span>, 3, <span class="code-string">'data_req'</span>, <span class="code-string">'high'</span>) ...<br>
+                        };<br><br>
+                        
+                        <span class="code-comment">% Score each candidate against M3 judging criteria</span><br>
+                        criteria = {<span class="code-string">'Explainability'</span>, <span class="code-string">'Data Fit'</span>, <span class="code-string">'Computational Cost'</span>, <span class="code-string">'Robustness'</span>};<br>
+                        weights = [0.35, 0.30, 0.20, 0.15];  <span class="code-comment">% Based on judge priorities [[38]]</span><br><br>
+                        
+                        scores = <span class="code-function">zeros</span>(<span class="code-function">length</span>(candidates), <span class="code-function">length</span>(criteria));<br>
+                        <span class="code-keyword">for</span> i = 1:<span class="code-function">length</span>(candidates)<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;c = candidates{i};<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-comment">% Explainability: simpler = higher score</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;scores(i,1) = 5 - c.complexity;  <span class="code-comment">% 1-5 scale</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-comment">% Data Fit: evaluate on validation set</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;scores(i,2) = evaluateFit(c.name, validation_data);<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-comment">% Computational Cost: lower = better</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;scores(i,3) = 5 - min(4, c.complexity);<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-comment">% Robustness: from sensitivity analysis</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;scores(i,4) = assessRobustness(c.name, data);<br>
+                        <span class="code-keyword">end</span><br><br>
+                        
+                        <span class="code-comment">% Weighted decision score</span><br>
+                        total_scores = scores * weights';<br>
+                        [best_score, best_idx] = <span class="code-function">max</span>(total_scores);<br>
+                        selected_model = candidates{best_idx}.name;<br><br>
+                        
+                        <span class="code-comment">% Generate justification text for report</span><br>
+                        justification = <span class="code-function">sprintf</span>([<span class="code-string">'We evaluated %d candidate models against four criteria '</span>...<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-string">'weighted by M3 judging priorities: Explainability (35%%), '</span>...<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-string">'Data Fit (30%%), Computational Cost (20%%), and Robustness (15%%). '</span>...<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-string">'The %s model achieved the highest weighted score (%.2f/5.0) '</span>...<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-string">'because it balanced strong predictive performance with '</span>...<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-string">'transparent methodology that judges can verify.']</span>, ...<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">length</span>(candidates), selected_model, best_score);<br><br>
+                        
+                        <span class="code-function">fprintf</span>(<span class="code-string">'✓ Selected model: %s\n'</span>, selected_model);<br>
+                        <span class="code-function">fprintf</span>(<span class="code-string">'✓ Justification saved for report appendix\n'</span>);
+                    </div>
+                    <div class="output">
+                        ✓ Selected model: Exponential<br>
+                        ✓ Justification saved for report appendix<br><br>
+                        <span class="winner-badge">Why this wins:</span> Shows systematic decision-making + aligns with judge rubric + creates ready-to-use report content
+                    </div>
+                    
+                    <table class="rubric-table">
+                        <tr>
+                            <th>Criterion</th>
+                            <th>Weight</th>
+                            <th>How Winners Address It</th>
+                        </tr>
+                        <tr class="high">
+                            <td><strong>Explainability</strong></td>
+                            <td>35%</td>
+                            <td>Simple models + visual validation + plain-language comments in code</td>
+                        </tr>
+                        <tr class="high">
+                            <td><strong>Data Fit</strong></td>
+                            <td>30%</td>
+                            <td>Residual analysis + RMSE/R² reporting + comparison to baseline</td>
+                        </tr>
+                        <tr class="medium">
+                            <td><strong>Computational Cost</strong></td>
+                            <td>20%</td>
+                            <td>Vectorized operations + pre-allocation + avoiding unnecessary complexity</td>
+                        </tr>
+                        <tr class="medium">
+                            <td><strong>Robustness</strong></td>
+                            <td>15%</td>
+                            <td>Sensitivity analysis + uncertainty quantification + fallback strategies</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- WINNER INSIGHT 3 -->
+        <div class="section" id="insight3">
+            <div class="section-header">
+                Insight #3: Modular, Reusable Code Structure
+            </div>
+            <div class="section-content">
+                <p><strong>Winner Pattern:</strong> Champion teams structure code as independent, testable modules. This enables rapid iteration and clear delegation during the 14-hour challenge.</p>
+                
+                <div class="flow-diagram">
+                    <div class="flow-step">
+                        <h4>📥 Data Loader</h4>
+                        <p><code>loadCompetitionData.m</code><br>Handles CSV/Excel/MAT formats + validation</p>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-step">
+                        <h4>🔧 Model Builder</h4>
+                        <p><code>buildModel.m</code><br>Progressive complexity + assumption tracking</p>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-step">
+                        <h4>📊 Validator</h4>
+                        <p><code>validateModel.m</code><br>RMSE, residuals, sensitivity analysis</p>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-step">
+                        <h4>📤 Report Generator</h4>
+                        <p><code>generateReport.m</code><br>Auto-exports figures + assumptions + results</p>
+                    </div>
+                </div>
+
+                <div class="insight-block">
+                    <div class="insight-title">Pattern: Competition-Ready Project Template</div>
+                    <div class="function-desc">Folder structure winners use to stay organized under time pressure</div>
+                    
+                    <div class="template-box">
+                        <strong>📁 M3_Challenge_Solution/</strong><br>
+                        ├── <strong>📁 data/</strong><br>
+                        │   ├── raw/ (original downloaded files)<br>
+                        │   ├── processed/ (cleaned MATLAB tables)<br>
+                        │   └── metadata.txt (source URLs, download dates)<br>
+                        ├── <strong>📁 code/</strong><br>
+                        │   ├── main.m (orchestrates workflow)<br>
+                        │   ├── utils/ (helper functions: load, validate, plot)<br>
+                        │   ├── models/ (candidate model implementations)<br>
+                        │   └── config.m (global parameters: thresholds, paths)<br>
+                        ├── <strong>📁 results/</strong><br>
+                        │   ├── figures/ (auto-saved validation plots)<br>
+                        │   ├── tables/ (CSV exports for report)<br>
+                        │   └── assumptions.md (auto-generated assumption log)<br>
+                        ├── <strong>📁 report/</strong><br>
+                        │   ├── template.docx (pre-formatted report shell)<br>
+                        │   ├── sections/ (modular content: intro, methods, results)<br>
+                        │   └── export.m (compiles final PDF)<br>
+                        └── <strong>README.md</strong> (how to run + team roles)
+                    </div>
+                    
+                    <div class="example">
+                        <div class="example-label">% Winner Template: Main Orchestration Script</div>
+                        <span class="code-comment">% main.m - Entry point for entire solution</span><br>
+                        <span class="code-function">clear</span>; <span class="code-function">clc</span>; <span class="code-function">close</span> <span class="code-keyword">all</span>;<br>
+                        <span class="code-function">addpath</span>(<span class="code-function">genpath</span>(<span class="code-string">'./code'</span>));  <span class="code-comment">% Add all subfolders</span><br>
+                        <span class="code-function">run</span>(<span class="code-string">'./code/config.m'</span>);  <span class="code-comment">% Load global settings</span><br><br>
+                        
+                        <span class="code-comment">% ===== PHASE 1: Data Preparation (Team Member A) =====</span><br>
+                        <span class="code-function">fprintf</span>(<span class="code-string">'[Phase 1/4] Loading and validating data...\n'</span>);<br>
+                        data = loadCompetitionData(CONFIG.data_source);<br>
+                        data = validateData(data, CONFIG.validation_rules);<br>
+                        <span class="code-function">save</span>(<span class="code-string">'./results/processed_data.mat'</span>, <span class="code-string">'data'</span>);<br><br>
+                        
+                        <span class="code-comment">% ===== PHASE 2: Model Development (Team Member B) =====</span><br>
+                        <span class="code-function">fprintf</span>(<span class="code-string">'[Phase 2/4] Building and selecting model...\n'</span>);<br>
+                        model_results = progressiveModel(data, CONFIG.model_options);<br>
+                        <span class="code-function">save</span>(<span class="code-string">'./results/model_results.mat'</span>, <span class="code-string">'model_results'</span>);<br><br>
+                        
+                        <span class="code-comment">% ===== PHASE 3: Validation & Sensitivity (Team Member C) =====</span><br>
+                        <span class="code-function">fprintf</span>(<span class="code-string">'[Phase 3/4] Validating model performance...\n'</span>);<br>
+                        validation = validateModel(model_results.model, data);<br>
+                        createValidationDashboard(validation);  <span class="code-comment">% Auto-saves figures</span><br><br>
+                        
+                        <span class="code-comment">% ===== PHASE 4: Report Generation (All Members) =====</span><br>
+                        <span class="code-function">fprintf</span>(<span class="code-string">'[Phase 4/4] Generating competition report...\n'</span>);<br>
+                        exportAssumptions(<span class="code-string">'./results/assumptions.md'</span>);<br>
+                        generateReport(model_results, validation, CONFIG.report_options);<br><br>
+                        
+                        <span class="code-function">fprintf</span>(<span class="code-string">'✅ Solution complete! Files ready in ./results/\n'</span>);<br>
+                        <span class="code-function">fprintf</span>(<span class="code-string">'📊 Key result: %s\n'</span>, model_results.key_finding);
+                    </div>
+                    <div class="output">
+                        [Phase 1/4] Loading and validating data...<br>
+                        [Phase 2/4] Building and selecting model...<br>
+                        [Phase 3/4] Validating model performance...<br>
+                        [Phase 4/4] Generating competition report...<br>
+                        ✅ Solution complete! Files ready in ./results/<br>
+                        📊 Key result: Exponential model predicts 23% growth by 2030 (±4%)<br><br>
+                        <span class="winner-badge">Why this wins:</span> Clear phase separation enables parallel work + automatic file organization + progress tracking under time pressure
+                    </div>
+                </div>
+
+                <div class="insight-block">
+                    <div class="insight-title">Pattern: One-Click Validation Suite</div>
+                    <div class="function-desc">Winners automate model checks—no manual verification during crunch time</div>
+                    
+                    <div class="example">
+                        <div class="example-label">% Winner Template: Automated Validation Function</div>
+                        <span class="code-keyword">function</span> report = validateModel(model, data, options)<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;report = struct();<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;report.passed = true;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;report.warnings = {};<br><br>
+                        
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-comment">% CHECK 1: Prediction accuracy (non-negotiable)</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;predictions = model.predict(data.test.X);<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;report.RMSE = <span class="code-function">sqrt</span>(<span class="code-function">mean</span>((predictions - data.test.y).^2));<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;report.Rsquared = 1 - <span class="code-function">sum</span>((data.test.y - predictions).^2) / ...<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">sum</span>((data.test.y - <span class="code-function">mean</span>(data.test.y)).^2);<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">if</span> report.RMSE > options.max_RMSE<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;report.passed = false;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;report.warnings{end+1} = <span class="code-function">sprintf</span>(<span class="code-string">'RMSE %.2f exceeds threshold %.2f'</span>, ...<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;report.RMSE, options.max_RMSE);<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">end</span><br><br>
+                        
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-comment">% CHECK 2: Residual normality (credibility indicator)</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;residuals = data.test.y - predictions;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;[h,p] = <span class="code-function">jbtest</span>(residuals);  <span class="code-comment">% Jarque-Bera test</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;report.residuals_normal = (p > 0.05);<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">if</span> ~report.residuals_normal<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;report.warnings{end+1} = <span class="code-string">'Residuals deviate from normality (p<0.05)'</span>;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">end</span><br><br>
+                        
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-comment">% CHECK 3: Sensitivity to key parameters (robustness)</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;report.sensitivity = runSensitivityAnalysis(model, data, options.params);<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">if</span> <span class="code-function">any</span>(report.sensitivity.impact > options.max_sensitivity)<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;report.warnings{end+1} = <span class="code-string">'Model highly sensitive to key parameters'</span>;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">end</span><br><br>
+                        
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-comment">% CHECK 4: Computational feasibility (practicality)</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;tic; model.predict(options.test_batch); toc;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;report.prediction_time = toc;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">if</span> report.prediction_time > options.max_time<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;report.warnings{end+1} = <span class="code-function">sprintf</span>(<span class="code-string">'Prediction too slow: %.2fs > %.2fs'</span>, ...<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;report.prediction_time, options.max_time);<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">end</span><br><br>
+                        
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-comment">% Generate summary for judges</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;report.summary = <span class="code-function">sprintf</span>([<span class="code-string">'Model validation: %s\n'</span>...<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-string">'• Accuracy: RMSE=%.2f, R²=%.3f\n'</span>...<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-string">'• Residuals: %s\n'</span>...<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-string">'• Sensitivity: %d high-impact parameters\n'</span>...<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-string">'• Speed: %.2fs per prediction\n'</span>...<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-string">'• Warnings: %d'</span>], ...<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">string</span>(ternary(report.passed, <span class="code-string">'✓ PASSED'</span>, <span class="code-string">'⚠ NEEDS REVIEW'</span>)), ...<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;report.RMSE, report.Rsquared, ...<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ternary(report.residuals_normal, <span class="code-string">'Normal'</span>, <span class="code-string">'Non-normal'</span>), ...<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">sum</span>(report.sensitivity.impact > options.max_sensitivity), ...<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;report.prediction_time, <span class="code-function">length</span>(report.warnings));<br>
+                        <span class="code-keyword">end</span>
+                    </div>
+                    <div class="output">
+                        Model validation: ✓ PASSED<br>
+                        • Accuracy: RMSE=3.15, R²=0.942<br>
+                        • Residuals: Normal<br>
+                        • Sensitivity: 1 high-impact parameters<br>
+                        • Speed: 0.02s per prediction<br>
+                        • Warnings: 0<br><br>
+                        <span class="winner-badge">Why this wins:</span> Instant credibility assessment + auto-generated judge-ready summary + catches issues before submission
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- COMPETITION CHECKLIST -->
+        <div class="section" id="checklist">
+            <div class="section-header">
+                🏁 M3 Challenge Day: Winner's Checklist
+            </div>
+            <div class="section-content">
+                <p><strong>Based on SIAM guidance [[29]][[31]] and winner post-mortems:</strong></p>
+                
+                <div class="checklist">
+                    <strong>⏰ Time Allocation (14 hours total)</strong>
+                    <li>Hours 0-2: Problem decomposition + team role assignment + data sourcing</li>
+                    <li>Hours 2-5: Build baseline model + validate on sample data</li>
+                    <li>Hours 5-9: Refine model + run sensitivity analysis + create visuals</li>
+                    <li>Hours 9-12: Draft report sections + integrate figures + assumption log</li>
+                    <li>Hours 12-14: Final proofread + export + submit (buffer for tech issues!)</li>
+                </div>
+                
+                <div class="checklist">
+                    <strong>📝 Report Must-Haves (Judge Priorities [[38]])</strong>
+                    <li>Executive summary with key result + uncertainty range (BLUF: Bottom Line Up Front)</li>
+                    <li>Clear problem restatement in your team's words</li>
+                    <li>Assumptions table with justification + source for each</li>
+                    <li>Model diagram or equation + plain-English explanation</li>
+                    <li>Validation results: RMSE/R² + residual plot + sensitivity analysis</li>
+                    <li>Limitations discussion + "if we had more time, we would..."</li>
+                    <li>Proper citations for all data sources and methods</li>
+                </div>
+                
+                <div class="checklist">
+                    <strong>💻 MATLAB Code Best Practices</strong>
+                    <li>Use vectorized operations (no for-loops for array math!)</li>
+                    <li>Pre-allocate arrays: <code>results = zeros(n,1)</code> not <code>results = []</code></li>
+                    <li>Save figures programmatically: <code>saveas(gcf, 'figure1.png')</code></li>
+                    <li>Use <code>try-catch</code> around file I/O and external function calls</li>
+                    <li>Comment decision points: <code>% Why logistic not exponential? See assumption A03</code></li>
+                    <li>Include a <code>run_all.m</code> that executes the full workflow in one click</li>
+                </div>
+                
+                <div class="warning-box">
+                    <strong>⚠️ Critical Pitfalls to Avoid (From Judge Feedback)</strong>
+                    <ul>
+                        <li><strong>Don't</strong> spend >3 hours researching—use tractable variables with available data [[31]]</li>
+                        <li><strong>Don't</strong> hide model limitations—judges reward honest reflection on weaknesses [[39]]</li>
+                        <li><strong>Don't</strong> submit code without comments—judges assess your reasoning process [[37]]</li>
+                        <li><strong>Don't</strong> ignore uncertainty—always report confidence intervals or sensitivity ranges</li>
+                        <li><strong>Do</strong> test your export workflow BEFORE competition day (PDF generation fails at 13:59!)</li>
+                    </ul>
+                </div>
+                
+                <div class="tip-box">
+                    <strong>🎯 Final Pro Tip from Champions:</strong> "Write the executive summary LAST, but place it FIRST in the report. Judges read this first—if it doesn't hook them with clear results and uncertainty, they may not dig deeper." [[31]]
+                </div>
+            </div>
+        </div>
+
+        <!-- COMPLETE GUIDE SUMMARY -->
+        <div style="text-align: center; padding: 2rem; background: linear-gradient(135deg, #8B1E3F, #000); color: white; margin: 2rem 0; border-radius: 8px;">
+            <h3>🎓 University School M3 Challenge MATLAB Guide: Complete</h3>
+            <p style="margin: 1rem 0;"><strong>You now have:</strong></p>
+            <ul style="text-align: left; display: inline-block; margin: 1rem 0;">
+                <li>✅ <strong>Part 1:</strong> Vectorized matrix operations (no for-loops!)</li>
+                <li>✅ <strong>Part 2:</strong> Conditional logic & robust programming patterns</li>
+                <li>✅ <strong>Part 3:</strong> Winner insights + competition-ready templates</li>
+            </ul>
+            <p style="margin: 1rem 0; font-style: italic;">"The best model is the simplest one that answers the question—and that you can explain clearly to judges."</p>
+            <p style="margin-top: 1.5rem; font-weight: bold;">🚀 Go build something amazing, University School!</p>
+            <p style="font-size: 0.9rem; opacity: 0.9; margin-top: 0.5rem;">Resources: SIAM M3 Challenge • MathWorks MATLAB • University School STEM Program</p>
+        </div>
+    </div>
+    
+    <script>
+        // Helper function for ternary operator (MATLAB-style)
+        function ternary(condition, trueVal, falseVal) {
+            return condition ? trueVal : falseVal;
+        }
+    </script>
+</body>
+</html>
