@@ -3,69 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tutorial Series | Index</title>
+    <title>MATLAB Guide for M3 Challenge | University School</title>
     <style>
+        /* Bauhaus-inspired professional aesthetic */
         :root {
-            --bg-color: #ffffff;
-            --text-color: #1a1a1a;
-            --accent-color: #0055aa;
-            --border-color: #e0e0e0;
-            --hover-bg: #f9f9f9;
+            --primary-bg: #ffffff;
+            --text-main: #222222;
+            --accent-blue: #0055aa; /* Classic MATLAB/MathWorks Blue */
+            --border-light: #e0e0e0;
+            --feature-hover-bg: #f9f9f9;
+            --shadow-subtle: 0 4px 6px rgba(0,0,0,0.05);
         }
 
         body {
             font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            color: var(--text-main);
+            background-color: var(--primary-bg);
+            margin: 0;
+            padding: 0;
             line-height: 1.6;
-            color: var(--text-color);
-            background-color: var(--bg-color);
-            max-width: 800px;
+        }
+
+        .main-container {
+            max-width: 1000px;
             margin: 0 auto;
             padding: 40px 20px;
         }
 
+        /* Hero Header with full logo */
         header {
-            border-bottom: 4px solid var(--text-color);
-            margin-bottom: 30px;
-            padding-bottom: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
+            border-bottom: 4px solid var(--text-main);
+            margin-bottom: 50px;
+            padding-bottom: 20px;
+            text-align: center;
+        }
+
+        .main-logo {
+            max-height: 80px;
+            width: auto;
+            margin-bottom: 10px;
         }
 
         h1 {
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: -1px;
+            letter-spacing: -1.5px;
+            font-size: 2.2rem;
             margin: 0;
         }
 
+        .m3-subheading {
+            color: #666;
+            margin-bottom: 40px;
+            font-size: 1.1rem;
+        }
+
+        /* Refined Controls Area */
         .controls {
             display: flex;
             gap: 15px;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
             align-items: center;
         }
 
-        /* Search Bar Styling */
         #tutorialSearch {
             flex-grow: 1;
-            padding: 10px;
-            border: 2px solid var(--text-color);
-            font-family: inherit;
+            padding: 12px 15px;
+            border: 2px solid var(--text-main);
             font-size: 1rem;
             outline: none;
+            transition: border-color 0.2s;
         }
 
-        /* PDF Button Styling */
+        #tutorialSearch:focus {
+            border-color: var(--accent-blue);
+        }
+
         .pdf-button {
-            background-color: var(--text-color);
+            background-color: var(--text-main);
             color: white;
             border: none;
-            padding: 10px 15px;
+            padding: 12px 20px;
             cursor: pointer;
             font-weight: bold;
             text-transform: uppercase;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
             transition: opacity 0.2s;
         }
 
@@ -73,81 +96,190 @@
             opacity: 0.8;
         }
 
-        nav ul {
+        /* Large Feature Card Navigation */
+        .tutorial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
             list-style: none;
             padding: 0;
         }
 
         .tutorial-item {
-            margin-bottom: 15px;
-            border: 1px solid var(--border-color);
-            transition: all 0.2s ease;
+            border: 1px solid var(--border-light);
+            transition: all 0.3s ease;
+            cursor: pointer;
         }
 
         .tutorial-item:hover {
-            border-color: var(--text-color);
-            background-color: var(--hover-bg);
+            background-color: var(--feature-hover-bg);
+            box-shadow: var(--shadow-subtle);
+            transform: translateY(-3px);
+            border-color: #999;
         }
 
-        .tutorial-item a {
-            display: block;
-            padding: 15px 20px;
+        .tutorial-card-anchor {
             text-decoration: none;
-            color: var(--text-color);
-            font-weight: 500;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            color: var(--text-main);
+            padding: 30px;
+            display: grid;
+            grid-template-rows: auto auto auto 1fr;
+            height: 100%;
+            box-sizing: border-box;
+            gap: 10px;
         }
 
-        .tutorial-item a::after {
-            content: '→';
-            color: var(--accent-color);
+        .card-icon {
+            max-height: 40px;
+            width: auto;
+            justify-self: start;
+            margin-bottom: 10px;
         }
 
+        .card-number {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #666;
+            font-weight: bold;
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: bold;
+            margin: 0;
+            line-height: 1.2;
+        }
+
+        .card-arrow {
+            color: var(--accent-blue);
+            font-weight: bold;
+            font-size: 1.5rem;
+            align-self: end;
+            justify-self: end;
+            margin-top: 15px;
+        }
+
+        /* Footer with Sponsor Logos */
         footer {
-            margin-top: 60px;
-            font-size: 0.8rem;
-            color: #999;
+            margin-top: 80px;
+            padding: 40px 0;
+            border-top: 1px solid var(--border-light);
             text-align: center;
-            border-top: 1px solid var(--border-color);
-            padding-top: 20px;
+            color: #777;
+            font-size: 0.85rem;
         }
 
-        /* Print Media Query for PDF */
+        .sponsor-section {
+            margin-bottom: 20px;
+            opacity: 0.7;
+        }
+
+.sponsor-logos {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+
+        .sponsor-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .sponsor-logo {
+            max-height: 35px;
+            width: auto;
+            filter: grayscale(100%); /* Optional: maintains the Bauhaus minimalist look */
+            transition: filter 0.3s;
+        }
+
+        .sponsor-item:hover .sponsor-logo {
+            filter: grayscale(0%);
+        }
+
+        .sponsor-item span {
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            color: #444;
+        }
+
+        /* Print Media Query */
         @media print {
-            .controls, footer, .tutorial-item a::after {
-                display: none;
-            }
-            body { padding: 0; }
-            .tutorial-item { border: none; border-bottom: 1px solid #ccc; }
+            .controls, footer, .card-arrow { display: none; }
+            .tutorial-grid { grid-template-columns: 1fr; }
+            .tutorial-item { border: none; border-bottom: 2px solid #ccc; padding: 20px 0; }
+            .tutorial-card-anchor { padding: 0; }
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>Tutorial Series</h1>
-    </header>
+    <div class="main-container">
+        <header>
+            <img src="USemblem.png" alt="University School" class="main-logo">
+            <h1>MATLAB Programming Guide</h1>
+        </header>
 
-    <div class="controls">
-        <input type="text" id="tutorialSearch" placeholder="Search tutorials..." onkeyup="filterTutorials()">
-        <button class="pdf-button" onclick="window.print()">Save Page as PDF</button>
+        <p class="m3-subheading">A comprehensive resource archive designed to assist students and faculty participating in the high-school level M3 Math Modeling Challenge.</p>
+
+        <div class="controls">
+            <input type="text" id="tutorialSearch" placeholder="Search tutorials..." onkeyup="filterTutorials()">
+            <button class="pdf-button" onclick="window.print()">Save Page as PDF</button>
+        </div>
+
+        <nav>
+            <ul class="tutorial-grid" id="tutorialList">
+                
+                <li class="tutorial-item">
+                    <a href="Part_One.html" class="tutorial-card-anchor">
+                        <img src="USemblem.png" alt="US" class="card-icon">
+                        <span class="card-number">Part One</span>
+                        <h2 class="card-title">Introduction and Fundamentals</h2>
+                        <span class="card-arrow">→</span>
+                    </a>
+                </li>
+
+                <li class="tutorial-item">
+                    <a href="Part_Two.html" class="tutorial-card-anchor">
+                        <img src="USemblem.png" alt="US" class="card-icon">
+                        <span class="card-number">Part Two</span>
+                        <h2 class="card-title">Advanced Applications</h2>
+                        <span class="card-arrow">→</span>
+                    </a>
+                </li>
+
+                <li class="tutorial-item">
+                    <a href="Part_Three.html" class="tutorial-card-anchor">
+                        <img src="USemblem.png" alt="US" class="card-icon">
+                        <span class="card-number">Part Three</span>
+                        <h2 class="card-title">Conclusion and Summary</h2>
+                        <span class="card-arrow">→</span>
+                    </a>
+                </li>
+
+            </ul>
+        </nav>
+
+        <footer>
+            <div class="sponsor-section">
+                <p>Supported by the institutions leading the challenge:</p>
+                <div class="sponsor-logos">
+                    <img src="MathWorks.png" alt="MATLAB" class="sponsor-logo">
+                    <img src="M3C-logo.png" alt="MathWorks M3 Challenge" class="sponsor-logo">
+                </div>
+            </div>
+            <p>&copy; 2026 | Educational Resources Archive, University School</p>
+        </footer>
     </div>
 
-    <nav>
-        <ul id="tutorialList">
-            <li class="tutorial-item"><a href="Part_One.html">Part One: Introduction and Fundamentals</a></li>
-            <li class="tutorial-item"><a href="Part_Two.html">Part Two: Advanced Applications</a></li>
-            <li class="tutorial-item"><a href="Part_Three.html">Part Three: Conclusion and Summary</a></li>
-        </ul>
-    </nav>
-
-    <footer>
-        <p>&copy; 2026 | Educational Resources Archive</p>
-    </footer>
-
     <script>
+        // Simple search filtering
         function filterTutorials() {
             const input = document.getElementById('tutorialSearch');
             const filter = input.value.toLowerCase();
